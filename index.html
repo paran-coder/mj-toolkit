@@ -506,6 +506,14 @@ canvas{display:none}
             </div>
             <span class="ext-go">설치하기<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
           </a>
+          <a class="ext-card" href="https://chromewebstore.google.com/detail/ohklpdbbilakaadgeofcnmnhigciemim?utm_source=item-share-cb" target="_blank" rel="noopener">
+            <img class="ext-icon" src="https://lh3.googleusercontent.com/cb_vvV6lvKTy5UT2CltAHVUYaveLE-9RYtnNMQsETZuKrRTiEBJXx_tmdpzs49WMvyTS9z1iYAx5ybH7X7cmkrPdgw=s128-rj-sc0x00ffffff" alt="">
+            <div class="ext-info">
+              <h3>Midjourney Hook</h3>
+              <p>미드저니 이미지를 MJ Toolkit에 바로 저장합니다. 이미지 위 Hook 버튼 한 번으로 프롬프트·파라미터 포함 갤러리에 저장됩니다.</p>
+            </div>
+            <span class="ext-go">설치하기<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+          </a>
         </div>
       </section>
     </div>
@@ -1361,10 +1369,12 @@ async function renderSgHistory(){
     };
   });
 }
-$('#sgHistoryClear').onclick=async()=>{
-  await dbClear('srefHistory');
-  renderSgHistory();
-  toast('검색 기록을 비웠어요');
+$('#sgHistoryClear').onclick=()=>{
+  confirmAction('검색 기록 전체 삭제', '최근 검색 기록을 모두 삭제할까요? 이 작업은 되돌릴 수 없어요.', async()=>{
+    await dbClear('srefHistory');
+    renderSgHistory();
+    toast('검색 기록을 비웠어요');
+  });
 };
 
 /* ============ 내보내기 / 불러오기 ============ */
