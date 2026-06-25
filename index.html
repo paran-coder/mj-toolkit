@@ -140,6 +140,8 @@ body{
 }
 .icon-btn:hover{color:var(--danger);border-color:var(--danger)}
 .icon-btn svg{width:20px;height:20px;stroke-width:1.7}
+.icon-btn.select-all-active{color:var(--accent);border-color:var(--accent);background:var(--accent-soft)}
+.icon-btn.select-all-active:hover{color:var(--accent);border-color:var(--accent)}
 
 .input-row{display:flex;gap:10px;width:100%;max-width:720px}
 input[type="text"]{
@@ -449,6 +451,7 @@ canvas{display:none}
           <span class="dz-hint">PNG · JPG</span>
           <input type="file" id="fileInput" accept="image/png,image/jpeg,image/webp" multiple hidden>
         </div>
+        <button class="icon-btn" id="metaSelectAllBtn" title="전체 선택"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></button>
         <button class="icon-btn" id="metaClearBtn" title="선택한 이미지 삭제"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/></svg></button>
       </div>
       <div class="topbar-row" id="styleTopRow" hidden>
@@ -511,6 +514,14 @@ canvas{display:none}
             <div class="ext-info">
               <h3>Midjourney Hook</h3>
               <p>미드저니 이미지를 MJ Toolkit에 바로 저장합니다. 이미지 위 Hook 버튼 한 번으로 프롬프트·파라미터 포함 갤러리에 저장됩니다.</p>
+            </div>
+            <span class="ext-go">설치하기<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+          </a>
+          <a class="ext-card" href="https://chromewebstore.google.com/detail/dkmplkbbaomekinigdodfiiomffaijjn?utm_source=item-share-cb" target="_blank" rel="noopener">
+            <img class="ext-icon" src="https://lh3.googleusercontent.com/pcIxhOCAjL1gx7wKHWv4JzeDw3V6KctlrjcsQNIn2LSJgwPLF_25kHqIe7MuLHcuXJBk8aC_0GNXABDWthYZO-qr8w=s128-rj-sc0x00ffffff" alt="">
+            <div class="ext-info">
+              <h3>TEXTBoard</h3>
+              <p>복사한 텍스트를 자동으로 모아 한 번에 합쳐주는 개인용 클립보드 수집기. 코드블럭 복사 버튼도 감지합니다.</p>
             </div>
             <span class="ext-go">설치하기<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
           </a>
@@ -970,6 +981,7 @@ function makeCard(it,i,extra){
     e.stopPropagation();
     if(selected.has(key)){selected.delete(key);card.classList.remove('selected');}
     else{selected.add(key);card.classList.add('selected');}
+    updateSelectAllBtn();
   };
   return card;
 }
@@ -1016,6 +1028,7 @@ function render(){
 
   root.querySelectorAll('.filters .f').forEach(b=>b.onclick=()=>{activeFilter=b.dataset.f;subCode=null;render();});
   renderStats();
+  updateSelectAllBtn();
 }
 
 function renderGroups(key){
@@ -1189,6 +1202,36 @@ $('#metaClearBtn').onclick=()=>{
   if(!selected.size){ toast('삭제할 이미지를 먼저 선택해주세요'); return; }
   const n=selected.size;
   confirmAction('이미지 삭제', `선택한 ${n}장의 이미지를 삭제할까요? 이 작업은 되돌릴 수 없어요.`, deleteSelectedMetaItems);
+};
+
+// 전체 선택 / 전체 해제 토글
+function getVisibleItems(){
+  const isGroup=(activeFilter==='sref'||activeFilter==='profile');
+  if(isGroup) return items; // 그룹 뷰에서는 전체 items 대상
+  return items.filter(it=>{
+    if(activeFilter==='all') return true;
+    if(activeFilter==='2x2') return it.isGrid2x2;
+    return (it.params.version||'').replace(/\s/g,'')===activeFilter;
+  });
+}
+function updateSelectAllBtn(){
+  const btn=$('#metaSelectAllBtn');
+  if(!btn) return;
+  const visible=getVisibleItems();
+  const allSelected=visible.length>0 && visible.every(it=>selected.has(itemKey(it)));
+  btn.classList.toggle('select-all-active', allSelected);
+  btn.title=allSelected ? '전체 해제' : '전체 선택';
+}
+$('#metaSelectAllBtn').onclick=()=>{
+  const visible=getVisibleItems();
+  if(!visible.length) return;
+  const allSelected=visible.every(it=>selected.has(itemKey(it)));
+  visible.forEach(it=>{
+    const key=itemKey(it);
+    if(allSelected) selected.delete(key);
+    else selected.add(key);
+  });
+  render();
 };
 ['dragenter','dragover'].forEach(ev=>document.addEventListener(ev,e=>{e.preventDefault();if(e.dataTransfer)e.dataTransfer.dropEffect='copy';db.classList.add('drag');}));
 document.addEventListener('dragleave',e=>{e.preventDefault();if(e.relatedTarget===null)db.classList.remove('drag');});
