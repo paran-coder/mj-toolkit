@@ -394,6 +394,17 @@ button:active:not(:disabled){transform:scale(.97)}
 .ext-go{display:flex;align-items:center;gap:5px;font-size:13px;font-weight:700;color:var(--accent);flex-shrink:0;white-space:nowrap}
 .ext-go svg{width:14px;height:14px}
 
+/* ---------- 추천사이트 ---------- */
+.site-gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;max-width:900px;margin:24px auto 0;padding:0 4px}
+.site-card{display:flex;flex-direction:column;border-radius:var(--radius-lg);background:var(--card-bg);border:1px solid var(--border);overflow:hidden;text-decoration:none;color:var(--text);transition:border-color .15s,transform .15s}
+.site-card:hover{border-color:var(--text-3);transform:translateY(-2px)}
+.site-card-thumb{width:100%;aspect-ratio:1200/630;object-fit:cover;background:var(--panel-bg);display:block}
+.site-card-body{padding:14px 16px 16px;display:flex;flex-direction:column;gap:6px;flex:1}
+.site-card-body h3{font-size:14.5px;font-weight:700;line-height:1.3}
+.site-card-body p{font-size:12.5px;color:var(--text-2);line-height:1.5;flex:1}
+.site-card-go{display:flex;align-items:center;gap:5px;font-size:12.5px;font-weight:700;color:var(--accent);margin-top:8px}
+.site-card-go svg{width:13px;height:13px}
+
 canvas{display:none}
 
 @media(max-width:880px){
@@ -430,6 +441,7 @@ canvas{display:none}
       <button class="nav-item active" data-view="meta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.6"/><path d="M21 15l-5-5L5 21"/></svg>메타 뷰어</button>
       <button class="nav-item" data-view="style"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="8" height="8" rx="1"/><rect x="13" y="3" width="8" height="8" rx="1"/><rect x="3" y="13" width="8" height="8" rx="1"/><rect x="13" y="13" width="8" height="8" rx="1"/></svg>스타일 그리드</button>
       <button class="nav-item" data-view="ext"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h3a2 2 0 0 1 2 2v3a2 2 0 1 0 0 4v3a2 2 0 0 1-2 2h-3a2 2 0 1 0-4 0H7a2 2 0 0 1-2-2v-3a2 2 0 1 0 0-4V6a2 2 0 0 1 2-2h3a2 2 0 1 1 4 0z"/></svg>확장프로그램</button>
+      <button class="nav-item" data-view="sites"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>추천사이트</button>
     </nav>
 
     <div class="nav-label">요약</div>
@@ -541,6 +553,19 @@ canvas{display:none}
           </a>
         </div>
       </section>
+
+      <section class="view" id="viewSites" hidden>
+        <div class="site-gallery">
+          <a class="site-card" href="https://film-prompt-studio.vercel.app/" target="_blank" rel="noopener">
+            <img class="site-card-thumb" src="https://film-prompt-studio.vercel.app/assets/og-image.png" alt="Film Prompt Studio">
+            <div class="site-card-body">
+              <h3>Film Prompt Studio</h3>
+              <p>필름 무드, 렌즈, 구도, 앵글, 조명, 효과를 조합해 Midjourney 8.1, GPT Image, Universal 프롬프트를 실시간으로 생성합니다.</p>
+              <span class="site-card-go">방문하기<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+            </div>
+          </a>
+        </div>
+      </section>
     </div>
   </main>
 </div>
@@ -638,9 +663,10 @@ function switchView(view){
   $('#viewMeta').hidden = view!=='meta';
   $('#viewStyle').hidden = view!=='style';
   $('#viewExt').hidden = view!=='ext';
+  $('#viewSites').hidden = view!=='sites';
   $('#metaTopRow').hidden = view!=='meta';
   $('#styleTopRow').hidden = view!=='style';
-  $('#topbar').hidden = view==='ext';
+  $('#topbar').hidden = (view==='ext' || view==='sites');
   $('#stats').classList.toggle('show', view==='meta' && items.length>0);
   $('#historyPanel').classList.toggle('show', view==='style');
 }
