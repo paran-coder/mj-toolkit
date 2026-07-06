@@ -414,6 +414,108 @@ canvas{display:none}
   .detail .meta-side{width:100%;border-left:none;border-top:1px solid var(--border)}
   .icon-btn{width:48px;height:48px}
 }
+
+  /* ========== 그리드 뷰어 (draft sref) ========== */
+  #viewDraft:not([hidden]){display:flex;flex-direction:column;height:100%;overflow:hidden}
+  .dv-tools{display:none}
+  .dv-tools.show{display:block}
+  .selhead{display:flex;align-items:center;justify-content:space-between;margin:14px 12px 8px}
+  .selhead .nav-label{margin:0}
+  .selhead b{font-size:12px;font-weight:700;color:var(--accent);font-variant-numeric:tabular-nums}
+  .selpreview{margin:0 4px 8px;padding:10px 11px;border-radius:var(--radius-md);background:var(--card-bg);border:1px solid var(--border);font-size:12px;line-height:1.6;color:var(--text);font-variant-numeric:tabular-nums;word-break:break-all;max-height:120px;overflow-y:auto;overflow-x:hidden;min-height:38px}
+  .selpreview .ph{color:var(--text-3)}
+  .side-btn{display:flex;align-items:center;justify-content:center;gap:7px;width:calc(100% - 8px);margin:0 4px 8px;padding:11px;border-radius:var(--radius-md);background:var(--accent);color:#fff;border:none;font-family:inherit;font-weight:700;font-size:13.5px;cursor:pointer;transition:.15s}
+  .side-btn:hover{filter:brightness(1.07)}
+  .side-btn svg{width:15px;height:15px}
+  .side-btn.ghost{background:var(--card-bg);color:var(--text-2);border:1px solid var(--border)}
+  .side-btn.ghost:hover{color:var(--text);border-color:var(--text-3);filter:none}
+  .ctl{display:flex;align-items:center;justify-content:space-between;gap:9px;padding:9px 12px;border-radius:var(--radius-md);background:var(--card-bg);border:1px solid var(--border);color:var(--text-2);font-size:13.5px;font-weight:500;font-family:inherit;margin:0 4px 8px}
+  .switch{position:relative;width:38px;height:22px;border-radius:20px;background:var(--border);cursor:pointer;flex-shrink:0;transition:.18s}
+  .switch.on{background:var(--accent)}
+  .switch i{position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:#fff;transition:.18s}
+  .switch.on i{left:19px}
+  .selpreview .ph{white-space:nowrap}
+
+  .dv-wrap{display:flex;flex-direction:column;height:100%;overflow:hidden}
+  .dv-topbar{padding:20px 30px 10px;flex-shrink:0}
+  .dv-dropbar{
+    position:relative;display:flex;align-items:center;gap:14px;height:56px;padding:0 20px;
+    background:var(--search-bg);border:1.5px solid var(--border);border-radius:var(--radius-lg);
+    cursor:pointer;transition:.18s;
+  }
+  .dv-dropbar:hover{border-color:var(--text-3)}
+  .dv-dropbar.drag{border-color:var(--accent);background:var(--accent-soft)}
+  .dv-dropbar .dz-icon{width:26px;height:26px;color:var(--text-2);flex-shrink:0;stroke-width:1.6}
+  .dv-dropbar.drag .dz-icon{color:var(--accent)}
+  .dv-dropbar .dz-text{color:var(--text-3);font-size:16px;font-weight:400;flex:1}
+  .dv-dropbar .dz-hint{font-size:12.5px;color:var(--text-3);padding:4px 11px;border:1px solid var(--border);border-radius:20px;flex-shrink:0}
+
+  .thumbstrip{display:none;align-items:center;gap:10px;overflow-x:auto;overflow-y:hidden;padding:4px 30px 12px;flex-shrink:0}
+  .thumb{position:relative;flex-shrink:0;height:70px;border-radius:9px;overflow:hidden;cursor:pointer;border:2px solid var(--border);background:var(--card-bg);transition:border-color .15s}
+  .thumb:hover{border-color:var(--text-3)}
+  .thumb.active{border-color:var(--accent)}
+  .thumb img{display:block;height:100%;width:auto;max-width:150px;object-fit:cover}
+  .thumb .tcnt{position:absolute;top:4px;left:4px;min-width:19px;height:19px;padding:0 5px;border-radius:10px;background:var(--accent);color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,.4);font-variant-numeric:tabular-nums}
+  .thumb .tcnt:hover{filter:brightness(1.12)}
+  .thumb .tdel{position:absolute;top:4px;right:4px;width:19px;height:19px;border-radius:50%;background:rgba(12,12,14,.62);color:#fff;border:none;cursor:pointer;display:none;align-items:center;justify-content:center;padding:0;backdrop-filter:blur(3px)}
+  .thumb .tdel svg{width:11px;height:11px;stroke-width:2.6}
+  .thumb:hover .tdel{display:flex}
+  .thumb .tdel:hover{background:var(--accent)}
+
+  .dv-content{flex:1;min-height:0;overflow:hidden;padding:4px 30px 14px;display:flex;flex-direction:column}
+  .dv-empty{flex:1;min-height:60vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:20px;color:var(--text-3)}
+  .dv-empty .big{width:84px;height:84px;border-radius:24px;background:var(--card-bg);display:grid;place-items:center}
+  .dv-empty .big svg{width:40px;height:40px;color:var(--text-3);stroke-width:1.4}
+  .dv-empty h2{font-size:20px;font-weight:700;color:var(--text);letter-spacing:-.01em}
+  .dv-empty p{font-size:14.5px;max-width:440px;line-height:1.55}
+  .dv-empty .browse{margin-top:4px;padding:11px 22px;border-radius:24px;background:var(--accent);color:#fff;border:none;font-family:inherit;font-weight:700;font-size:14px;cursor:pointer;transition:.15s}
+  .dv-empty .browse:hover{filter:brightness(1.06);transform:translateY(-1px)}
+
+  .stage{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;overflow:hidden;padding:4px 0}
+  .gridwrap{position:relative;line-height:0;border-radius:var(--radius-sm);overflow:hidden;box-shadow:var(--shadow)}
+  .gridwrap img{display:block;width:100%;height:100%}
+  .cell{position:absolute;display:flex;align-items:flex-start;justify-content:flex-start;cursor:pointer;border:1.5px solid transparent;transition:background .13s,border-color .13s}
+  .cell:hover{background:rgba(242,64,45,.16);border-color:var(--accent)}
+  .cell .lab{margin:5px;padding:3px 7px;border-radius:7px;font-size:11px;font-weight:600;font-variant-numeric:tabular-nums;letter-spacing:.01em;line-height:1.2;background:rgba(12,12,14,.74);color:#fff;backdrop-filter:blur(4px);white-space:nowrap;pointer-events:none;transition:.13s;max-width:calc(100% - 10px);overflow:hidden;text-overflow:ellipsis}
+  .cell:hover .lab{background:var(--accent);color:#fff}
+  .cell .num{opacity:.55;margin-right:5px;font-weight:700}
+  .cell .check{position:absolute;top:6px;right:6px;width:19px;height:19px;border-radius:50%;background:var(--accent);color:#fff;display:none;align-items:center;justify-content:center;box-shadow:0 1px 4px rgba(0,0,0,.35)}
+  .cell .check svg{width:12px;height:12px;stroke-width:3}
+  .cell.selected{background:rgba(242,64,45,.22);border-color:var(--accent);border-width:2px}
+  .cell.selected .lab{background:var(--accent);color:#fff;opacity:1}
+  .cell.selected .check{display:flex}
+  .cell.flash{animation:dvFlash .5s ease}
+  @keyframes dvFlash{0%{background:rgba(242,64,45,.45)}100%{background:rgba(242,64,45,.22)}}
+  body.labels-off .cell .lab{opacity:0}
+  body.labels-off .cell:hover .lab{opacity:1}
+  body.labels-off .cell.selected .lab{opacity:1}
+
+  .dv-caption{display:flex;flex-shrink:0;align-items:center;gap:9px;flex-wrap:wrap;justify-content:center;padding:12px 0 0;color:var(--text-2);font-size:13px;max-height:32vh;overflow-y:auto}
+  .dv-caption .pill{display:inline-flex;align-items:center;gap:7px;background:var(--card-bg);border:1px solid var(--border);border-radius:20px;padding:6px 13px;font-weight:500}
+  .dv-caption .pill b{color:var(--text);font-weight:700;font-variant-numeric:tabular-nums}
+  .dv-caption .pill.k{background:none;border-color:var(--border-2);color:var(--text-3)}
+  .dv-caption .pill.k b{color:var(--text-2);font-weight:600;word-break:break-all}
+  .dv-caption .capbreak{flex-basis:100%;height:0}
+  .dv-caption .warn{color:var(--accent);font-weight:600}
+
+  .blk-overlay{position:fixed;inset:0;background:rgba(12,12,14,.46);backdrop-filter:blur(3px);display:flex;align-items:center;justify-content:center;z-index:100;opacity:0;pointer-events:none;transition:opacity .2s ease}
+  .blk-overlay.show{opacity:1;pointer-events:auto}
+  .blk-card{width:420px;max-width:calc(100vw - 40px);max-height:calc(100vh - 40px);overflow:hidden;display:flex;flex-direction:column;background:var(--panel-bg);border:1px solid var(--border);border-radius:20px;box-shadow:0 20px 60px rgba(0,0,0,.28);transform:translateY(10px) scale(.97);opacity:0;transition:transform .22s cubic-bezier(.2,.9,.3,1.2),opacity .18s ease}
+  .blk-overlay.show .blk-card{transform:translateY(0) scale(1);opacity:1}
+  .blk-head{display:flex;align-items:center;gap:12px;padding:22px 22px 14px}
+  .blk-ico{width:40px;height:40px;flex-shrink:0;border-radius:12px;background:var(--accent-soft);display:grid;place-items:center}
+  .blk-ico svg{width:21px;height:21px;color:var(--accent);stroke-width:2}
+  .blk-head h3{font-size:16.5px;font-weight:700;color:var(--text);letter-spacing:-.01em;line-height:1.3}
+  .blk-head p{font-size:12.5px;color:var(--text-3);margin-top:2px}
+  .blk-body{padding:2px 22px 6px;overflow-y:auto;display:flex;flex-direction:column;gap:8px}
+  .blk-item{display:flex;align-items:center;gap:10px;padding:11px 13px;border-radius:12px;background:var(--card-bg);border:1px solid var(--border-2)}
+  .blk-item .cnt{flex-shrink:0;min-width:30px;height:30px;padding:0 6px;border-radius:9px;background:var(--accent);color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;font-variant-numeric:tabular-nums}
+  .blk-item .meta{min-width:0;flex:1}
+  .blk-item .fn{font-size:13px;font-weight:600;color:var(--text);word-break:break-all;line-height:1.4}
+  .blk-item .sub{font-size:11.5px;color:var(--text-3);margin-top:2px}
+  .blk-foot{padding:16px 22px 22px;display:flex;justify-content:flex-end}
+  .blk-foot button{padding:10px 22px;border-radius:24px;background:var(--accent);color:#fff;border:none;font-family:inherit;font-weight:700;font-size:13.5px;cursor:pointer;transition:.15s}
+  .blk-foot button:hover{filter:brightness(1.07)}
 </style>
 </head>
 <body>
@@ -440,6 +542,7 @@ canvas{display:none}
     <nav class="nav">
       <button class="nav-item active" data-view="meta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.6"/><path d="M21 15l-5-5L5 21"/></svg>메타 뷰어</button>
       <button class="nav-item" data-view="style"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="8" height="8" rx="1"/><rect x="13" y="3" width="8" height="8" rx="1"/><rect x="3" y="13" width="8" height="8" rx="1"/><rect x="13" y="13" width="8" height="8" rx="1"/></svg>스타일 그리드</button>
+      <button class="nav-item" data-view="draft"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>그리드 뷰어</button>
       <button class="nav-item" data-view="ext"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h3a2 2 0 0 1 2 2v3a2 2 0 1 0 0 4v3a2 2 0 0 1-2 2h-3a2 2 0 1 0-4 0H7a2 2 0 0 1-2-2v-3a2 2 0 1 0 0-4V6a2 2 0 0 1 2-2h3a2 2 0 1 1 4 0z"/></svg>확장프로그램</button>
       <button class="nav-item" data-view="sites"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>추천사이트</button>
     </nav>
@@ -452,14 +555,28 @@ canvas{display:none}
       <div id="sgHistory"></div>
     </div>
 
-    <div class="nav-label">데이터</div>
-    <div class="data-actions">
+    <div id="dataSection">
+      <div class="nav-label">데이터</div>
+      <div class="data-actions" id="dataActions">
       <button class="data-btn" id="exportBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg>내보내기</button>
       <button class="data-btn" id="importDataBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M17 8l-5-5-5 5"/><path d="M12 3v13"/></svg>불러오기</button>
       <input type="file" id="importFile" accept="application/json" hidden>
     </div>
+    </div><!-- /dataSection -->
 
-    <div class="sidebar-foot">
+    <!-- 그리드 뷰어 전용 툴 패널 -->
+    <div class="dv-tools" id="dvTools">
+      <div class="dv-stats-panel" id="dv-stats"></div>
+      <div class="selhead"><span class="nav-label">선택한 코드 (전체 판)</span><b id="dvSelCount">0개</b></div>
+      <div class="selpreview" id="dvSelPreview"><span class="ph">칸을 클릭해 선택하면 여기에 모여요</span></div>
+      <button class="side-btn" id="dvCopySel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>선택 복사</button>
+      <button class="side-btn ghost" id="dvCopyPerm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H7a2 2 0 0 0-2 2v4a2 2 0 0 1-2 2 2 2 0 0 1 2 2v4a2 2 0 0 0 2 2h1"/><path d="M16 3h1a2 2 0 0 1 2 2v4a2 2 0 0 0 2 2 2 2 0 0 0-2 2v4a2 2 0 0 1-2 2h-1"/></svg>순열 { } 복사</button>
+      <button class="side-btn ghost" id="dvClearSel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>선택 전체 해제</button>
+      <div class="ctl" style="margin-top:14px">코드 라벨 표시<span class="switch on" id="dvLabelSwitch"><i></i></span></div>
+      <button class="side-btn ghost" id="dvCopyAll"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>이 판 24개 복사</button>
+    </div>
+
+    <div class="sidebar-foot" id="sidebar-foot">
       <button class="theme-toggle" id="themeToggle">
         <svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
         <span id="themeLabel">다크 모드</span>
@@ -574,6 +691,33 @@ canvas{display:none}
           </a>
         </div>
       </section>
+
+      <!-- 그리드 뷰어 뷰 -->
+      <section class="view" id="viewDraft" hidden>
+        <div class="dv-wrap">
+          <div class="dv-topbar">
+            <div class="dv-dropbar" id="dv-dropbar">
+              <svg class="dz-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M17 8l-5-5-5 5"/><path d="M12 3v13"/></svg>
+              <span class="dz-text" id="dv-dzText">--sref random --draft 그리드를 여기에 끌어다 놓거나 클릭해서 찾아보세요 · 여러 장 한 번에 OK</span>
+              <span class="dz-hint">PNG · JPG</span>
+              <input type="file" id="dv-fileInput" accept="image/png,image/jpeg,image/webp" multiple hidden>
+            </div>
+          </div>
+          <div class="thumbstrip" id="thumbstrip"></div>
+          <div class="dv-content">
+            <div class="dv-empty" id="dv-empty">
+              <div class="big"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></div>
+              <h2>draft 그리드를 올리면 칸마다 sref 코드를 얹어드려요</h2>
+              <p>미드저니 <b>--sref random --draft</b> 결과(24분할)를 올리면, 메타의 sref 코드 24개를 읽어 각 칸에 표시합니다. 칸을 클릭해 여러 개 선택하면 공백으로 이어 한꺼번에 복사돼요.</p>
+              <button class="browse" id="dv-browseBtn">그리드 이미지 찾아보기</button>
+            </div>
+            <div class="stage" id="stage" style="display:none">
+              <div class="gridwrap" id="gridwrap"><img id="gridImg" alt=""></div>
+            </div>
+            <div class="dv-caption" id="dv-caption" style="display:none"></div>
+          </div>
+        </div>
+      </section>
     </div>
   </main>
 </div>
@@ -610,6 +754,18 @@ canvas{display:none}
       <button class="btn-cancel" id="confirmCancelBtn">취소</button>
       <button class="btn-danger" id="confirmOkBtn">삭제</button>
     </div>
+  </div>
+</div>
+
+<!-- 그리드 뷰어: 유효하지 않은 파일 알림 -->
+<div class="blk-overlay" id="blkOverlay">
+  <div class="blk-card">
+    <div class="blk-head">
+      <span class="blk-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span>
+      <div><h3>올바른 파일이 아닙니다</h3><p>정상 draft 그리드(6×4=24칸)가 아니에요</p></div>
+    </div>
+    <div class="blk-body" id="blkBody"></div>
+    <div class="blk-foot"><button id="blkClose">확인</button></div>
   </div>
 </div>
 
@@ -672,11 +828,21 @@ function switchView(view){
   $('#viewStyle').hidden = view!=='style';
   $('#viewExt').hidden = view!=='ext';
   $('#viewSites').hidden = view!=='sites';
+  $('#viewDraft').hidden = view!=='draft';
   $('#metaTopRow').hidden = view!=='meta';
   $('#styleTopRow').hidden = view!=='style';
-  $('#topbar').hidden = (view==='ext' || view==='sites');
+  $('#topbar').hidden = (view==='ext' || view==='sites' || view==='draft');
   $('#stats').classList.toggle('show', view==='meta' && items.length>0);
   $('#historyPanel').classList.toggle('show', view==='style');
+  $('#dvTools').classList.toggle('show', view==='draft');
+  if(view==='draft'){
+    const da=$('#dataSection'), sf=$('#sidebar-foot');
+    sf.parentElement.insertBefore(da, sf);
+    dvFitGrid();
+  } else {
+    const da=$('#dataSection'), dvt=$('#dvTools');
+    dvt.parentElement.insertBefore(da, dvt);
+  }
 }
 document.querySelectorAll('.nav-item[data-view]').forEach(b=>b.onclick=()=>switchView(b.dataset.view));
 
@@ -1687,6 +1853,261 @@ $('#importFile').onchange=()=>{
   switchView('meta');
   await restoreMetaItems();
   await renderSgHistory();
+})();
+
+/* ========== 그리드 뷰어 JS ========== */
+(function(){
+  const COLS=6, ROWS=4, CELLS=COLS*ROWS;
+  let dvGrids=[];
+  let dvActiveId=null;
+  let dvGidSeq=0;
+  const dvSeen=new Set();
+
+  function dvActiveGrid(){return dvGrids.find(g=>g.id===dvActiveId)||null;}
+
+  function dvAllSelectedString(){
+    const parts=[];
+    dvGrids.forEach(g=>{[...g.sel].sort((a,b)=>a-b).forEach(i=>{const c=g.item.sref[i];if(c)parts.push(c);});});
+    return parts.join(' ');
+  }
+  function dvTotalSelCount(){return dvGrids.reduce((n,g)=>n+g.sel.size,0);}
+
+  function dvMultiCodes(str,key){
+    const re=new RegExp('--'+key+'\\s+([\\d\\s]+)','i');
+    const m=str.match(re); if(!m)return [];
+    return m[1].trim().split(/\s+/).filter(Boolean);
+  }
+  function dvCleanPrompt(desc){
+    return (desc||'').split('--')[0].replace(/\s+/g,' ').trim();
+  }
+  function dvParseParams(desc){
+    const params=[];
+    const re=/--(\w[\w-]*)(?:\s+([^-][^\s-]*(?:\s+[^-][^\s-]*)*))?/g;
+    let m;
+    while((m=re.exec(desc))!==null){params.push({key:m[1],val:(m[2]||'').trim()||null});}
+    return params;
+  }
+  async function dvBuildItem(file){
+    const buf=await file.arrayBuffer();
+    const png=await parsePNG(buf);
+    const url=URL.createObjectURL(file);
+    let w=png.width,h=png.height;
+    if(!w||!h){
+      await new Promise(res=>{const im=new Image();im.onload=()=>{w=im.naturalWidth;h=im.naturalHeight;res();};im.onerror=res;im.src=url;});
+    }
+    const desc=png.text['Description']||'';
+    const sref=dvMultiCodes(desc,'sref');
+    const uuid=(desc.match(/Job ID:\s*([0-9a-f-]+)/i)||[])[1]||'';
+    return {file,url,name:file.name,size:file.size,w,h,
+            desc,prompt:dvCleanPrompt(desc),sref,
+            allParams:dvParseParams(desc),uuid,
+            created:png.text['Creation Time']||'',author:png.text['Author']||'',
+            isPNG:png.isPNG};
+  }
+
+  /* thumbnail strip */
+  function dvRenderThumbs(){
+    const strip=$('#thumbstrip');
+    if(!dvGrids.length){strip.style.display='none';strip.innerHTML='';return;}
+    strip.style.display='flex';
+    strip.innerHTML=dvGrids.map(g=>{
+      const cnt=g.sel.size;
+      return `<div class="thumb ${g.id===dvActiveId?'active':''}" data-id="${g.id}" title="${esc(g.item.name)}">
+        <img src="${g.item.url}" alt="">
+        ${cnt?`<span class="tcnt" data-clr="${g.id}">${cnt}</span>`:''}
+        <button class="tdel" data-del="${g.id}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+      </div>`;
+    }).join('');
+    strip.querySelectorAll('.thumb').forEach(t=>{
+      t.onclick=e=>{
+        if(e.target.closest('.tdel')){dvDeleteGrid(+e.target.closest('.tdel').dataset.del);return;}
+        if(e.target.closest('.tcnt')){dvClearGridSel(+e.target.closest('.tcnt').dataset.clr);return;}
+        dvSetActive(+t.dataset.id);
+      };
+    });
+  }
+
+  function dvFitGrid(){
+    const g=dvActiveGrid(); if(!g)return;
+    const stage=$('#stage'),wrap=$('#gridwrap'),it=g.item;
+    const sw=stage.clientWidth,sh=stage.clientHeight;
+    if(!sw||!sh||!it.w||!it.h)return;
+    const ar=it.w/it.h;
+    let W=sw,H=sw/ar;
+    if(H>sh){H=sh;W=sh*ar;}
+    wrap.style.width=Math.round(W)+'px';
+    wrap.style.height=Math.round(H)+'px';
+  }
+  window.dvFitGrid=dvFitGrid; // switchView에서 호출하기 위해 노출
+
+  function dvSetActive(id){dvActiveId=id;dvRenderActive();dvRenderThumbs();}
+  function dvRenderActive(){
+    const g=dvActiveGrid();
+    if(!g){
+      $('#stage').style.display='none';
+      $('#dv-caption').style.display='none';
+      $('#dv-empty').style.display='flex';
+      $('#dv-stats').innerHTML='';
+      return;
+    }
+    $('#dv-empty').style.display='none';
+    $('#stage').style.display='flex';
+    $('#dv-caption').style.display='flex';
+    const it=g.item;
+    const wrap=$('#gridwrap');
+    wrap.querySelectorAll('.cell').forEach(c=>c.remove());
+    const gimg=$('#gridImg');
+    gimg.onload=dvFitGrid;
+    gimg.src=it.url;
+    const check='<span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>';
+    for(let r=0;r<ROWS;r++){
+      for(let c=0;c<COLS;c++){
+        const idx=r*COLS+c;
+        const code=it.sref[idx];
+        const cell=document.createElement('div');
+        cell.className='cell'+(g.sel.has(idx)?' selected':'');
+        cell.style.left=(c/COLS*100)+'%';
+        cell.style.top=(r/ROWS*100)+'%';
+        cell.style.width=(100/COLS)+'%';
+        cell.style.height=(100/ROWS)+'%';
+        if(code){
+          cell.innerHTML=`<span class="lab"><span class="num">${idx+1}</span>${code}</span>${check}`;
+          cell.title='클릭해서 선택/해제 · sref '+code;
+          cell.onclick=()=>dvToggleCell(idx,cell);
+        }else{
+          cell.innerHTML=`<span class="lab" style="opacity:.4"><span class="num">${idx+1}</span>—</span>`;
+          cell.style.cursor='default';
+        }
+        wrap.appendChild(cell);
+      }
+    }
+    dvRenderCaption(g);
+    dvRenderStats(g);
+    dvFitGrid();
+  }
+
+  function dvRenderCaption(g){
+    const it=g.item,n=it.sref.length,cap=$('#dv-caption');
+    const ratio=it.w/it.h;
+    const shape=ratio>1.15?'가로형':(ratio<0.87?'세로형':'정사각형');
+    let html=`<span class="pill">프롬프트 <b>${esc(it.prompt)||'—'}</b></span>`;
+    it.allParams.forEach(p=>{
+      const key=p.key.toLowerCase();
+      if(key==='sref'){html+=`<span class="pill">--sref <b>${n}개</b> <span style="opacity:.5">(칸에 표시)</span></span>`;}
+      else if(p.val){html+=`<span class="pill">--${esc(p.key)} <b>${esc(p.val)}</b></span>`;}
+      else{html+=`<span class="pill">--${esc(p.key)}</span>`;}
+    });
+    html+=`<span class="capbreak"></span>`;
+    html+=`<span class="pill k">해상도 <b>${it.w}×${it.h}</b> · ${shape}</span>`;
+    if(it.created)html+=`<span class="pill k">생성 <b>${esc(it.created)}</b></span>`;
+    if(it.author)html+=`<span class="pill k">Author <b>${esc(it.author)}</b></span>`;
+    if(it.uuid)html+=`<span class="pill k">Job ID <b>${esc(it.uuid)}</b></span>`;
+    if(n!==CELLS)html+=`<span class="warn">⚠ sref ${n}개 — draft 24칸 그리드가 아닐 수 있어요</span>`;
+    cap.innerHTML=html;
+  }
+  function dvRenderStats(g){
+    $('#dv-stats').innerHTML=`
+      <div class="stat-row"><span>올린 판</span><b>${dvGrids.length}개</b></div>
+      <div class="stat-row"><span>선택(전체 판)</span><b>${dvTotalSelCount()}개</b></div>
+      <div class="stat-row"><span>이 판 sref</span><b>${g.item.sref.length} / ${CELLS}</b></div>
+      <div class="stat-row"><span>이 판 선택</span><b>${g.sel.size}개</b></div>`;
+  }
+
+  function dvToggleCell(idx,cell){
+    const g=dvActiveGrid(); if(!g)return;
+    if(g.sel.has(idx)){g.sel.delete(idx);cell.classList.remove('selected');}
+    else{g.sel.add(idx);cell.classList.add('selected','flash');setTimeout(()=>cell.classList.remove('flash'),500);}
+    dvUpdateAll(true);
+  }
+  function dvClearGridSel(id){
+    const g=dvGrids.find(x=>x.id===id); if(!g)return;
+    g.sel.clear();
+    if(id===dvActiveId)dvRenderActive();
+    dvUpdateAll(false);
+    toast('이 판 선택 해제');
+  }
+  function dvUpdateAll(writeClip){
+    const str=dvAllSelectedString();
+    const n=dvTotalSelCount();
+    $('#dvSelCount').textContent=n+'개';
+    const prev=$('#dvSelPreview');
+    if(n)prev.textContent=str;
+    else prev.innerHTML='<span class="ph">칸을 클릭해 선택하면 여기에 모여요</span>';
+    dvRenderThumbs();
+    const g=dvActiveGrid(); if(g)dvRenderStats(g);
+    if(writeClip){
+      if(str)copy(str,n+'개 선택');
+      else{navigator.clipboard.writeText('').catch(()=>{});toast('선택 해제됨');}
+    }
+  }
+
+  /* sidebar tools */
+  $('#dvLabelSwitch').onclick=function(){
+    this.classList.toggle('on');
+    document.body.classList.toggle('labels-off',!this.classList.contains('on'));
+  };
+  $('#dvCopySel').onclick=()=>{const s=dvAllSelectedString();if(s)copy(s,dvTotalSelCount()+'개 선택');else toast('선택된 코드가 없어요');};
+  $('#dvCopyPerm').onclick=()=>{const s=dvAllSelectedString();if(!s){toast('선택된 코드가 없어요');return;}copy('{ '+s.split(' ').join(', ')+' }',dvTotalSelCount()+'개 순열');};
+  $('#dvClearSel').onclick=()=>{dvGrids.forEach(g=>g.sel.clear());dvRenderActive();dvUpdateAll(false);navigator.clipboard.writeText('').catch(()=>{});toast('선택 전체 해제');};
+  $('#dvCopyAll').onclick=()=>{const g=dvActiveGrid();if(g&&g.item.sref.length)copy(g.item.sref.join(' '),`이 판 ${g.item.sref.length}개`);};
+
+  function dvDeleteGrid(id){
+    const idx=dvGrids.findIndex(g=>g.id===id); if(idx<0)return;
+    const g=dvGrids[idx];
+    URL.revokeObjectURL(g.item.url);
+    dvSeen.delete(g.item.name+'|'+g.item.size);
+    dvGrids.splice(idx,1);
+    if(dvActiveId===id)dvActiveId=dvGrids.length?dvGrids[Math.min(idx,dvGrids.length-1)].id:null;
+    dvRenderThumbs();dvRenderActive();dvUpdateAll(false);
+    if(!dvGrids.length)$('#dv-dzText').textContent='--sref random --draft 그리드를 여기에 끌어다 놓거나 클릭해서 찾아보세요 · 여러 장 한 번에 OK';
+    toast('판 삭제됨');
+  }
+
+  function dvShowBlockModal(rejected){
+    $('#blkBody').innerHTML=rejected.map(r=>`
+      <div class="blk-item"><span class="cnt">${r.count}</span>
+      <div class="meta"><div class="fn">${esc(r.name)}</div>
+      <div class="sub">sref ${r.count}개 감지 · 24개 필요</div></div></div>`).join('');
+    $('#blkOverlay').classList.add('show');
+  }
+  $('#blkClose').onclick=()=>$('#blkOverlay').classList.remove('show');
+  $('#blkOverlay').addEventListener('click',e=>{if(e.target.id==='blkOverlay')$('#blkOverlay').classList.remove('show');});
+
+  function dvValidateSref(item){const n=item.sref.length;return{ok:n===CELLS,count:n};}
+
+  async function dvAddFiles(fileList){
+    let files=[...fileList].filter(f=>/image\/(png|jpeg|webp)/.test(f.type)||/\.(png|jpe?g|webp)$/i.test(f.name));
+    files=files.filter(f=>{const k=f.name+'|'+f.size;if(dvSeen.has(k))return false;dvSeen.add(k);return true;});
+    if(!files.length){toast('새 그리드가 없어요 (이미 추가됨)');return;}
+    $('#dv-dzText').textContent='읽는 중…';
+    let firstNew=null;
+    const rejected=[];
+    for(const f of files){
+      try{
+        const item=await dvBuildItem(f);
+        const check=dvValidateSref(item);
+        if(!check.ok){rejected.push({name:f.name,count:check.count});dvSeen.delete(f.name+'|'+f.size);continue;}
+        const id=++dvGidSeq;dvGrids.push({id,item,sel:new Set()});if(firstNew===null)firstNew=id;
+      }catch(e){console.warn(e);}
+    }
+    if(dvActiveId===null&&firstNew!==null)dvActiveId=firstNew;
+    dvRenderThumbs();dvRenderActive();dvUpdateAll(false);
+    if(dvGrids.length)$('#dv-dzText').textContent=`${dvGrids.length}판 로드됨 · 더 끌어다 놓거나 클릭해서 추가`;
+    else if(!rejected.length)$('#dv-dzText').textContent='--sref random --draft 그리드를 여기에 끌어다 놓거나 클릭해서 찾아보세요 · 여러 장 한 번에 OK';
+    if(rejected.length)dvShowBlockModal(rejected);
+  }
+
+  const dvFi=$('#dv-fileInput'),dvDb=$('#dv-dropbar');
+  dvDb.onclick=()=>dvFi.click();
+  $('#dv-browseBtn').onclick=e=>{e.stopPropagation();dvFi.click();};
+  dvFi.onchange=()=>{dvAddFiles(dvFi.files);dvFi.value='';};
+  document.addEventListener('drop',e=>{
+    if(activeView!=='draft')return;
+    e.preventDefault();dvDb.classList.remove('drag');
+    if(e.dataTransfer&&e.dataTransfer.files&&e.dataTransfer.files.length)dvAddFiles(e.dataTransfer.files);
+  });
+
+  if(window.ResizeObserver){new ResizeObserver(()=>{if(activeView==='draft')dvFitGrid();}).observe($('#stage'));}
 })();
 </script>
 </body>
