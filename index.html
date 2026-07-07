@@ -134,7 +134,33 @@ body{
 .topbar{padding:20px 30px 14px;flex-shrink:0}
 .topbar-row{display:flex;align-items:center;gap:10px}
 .topbar-row[hidden]{display:none}
-#styleTopRow{justify-content:center}
+#styleTopRow{flex-direction:column;align-items:stretch;gap:10px;max-width:720px;margin:0 auto;width:100%}
+
+/* 스타일 그리드 탭 */
+.sg-tabs{display:flex;gap:4px;background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius-md);padding:4px}
+.sg-tab-btn{flex:1;border:none;background:transparent;color:var(--text-2);font-family:inherit;font-size:13px;font-weight:700;padding:9px;border-radius:8px;cursor:pointer;transition:.15s}
+.sg-tab-btn:hover{color:var(--text)}
+.sg-tab-btn.active{background:var(--accent);color:#fff}
+.sg-manual-hint{font-size:12.5px;color:var(--text-3);font-weight:500;line-height:1.5}
+.sg-cell.drag{outline:2px dashed var(--accent);outline-offset:-2px;background:var(--accent-soft)}
+.manual-drop{display:flex;flex-direction:column;align-items:center;gap:8px;color:var(--text-3);padding:10px;text-align:center;pointer-events:none}
+.manual-drop svg{width:24px;height:24px;stroke-width:1.6}
+.manual-drop span{font-size:11px;font-weight:600}
+.sg-manual-cell{cursor:pointer}
+.cell-replace{
+  position:absolute;top:6px;right:6px;width:23px;height:23px;border-radius:50%;
+  background:rgba(12,12,14,.62);color:#fff;border:none;cursor:pointer;
+  display:none;align-items:center;justify-content:center;backdrop-filter:blur(3px);z-index:2;
+}
+.cell-replace svg{width:12px;height:12px;stroke-width:2.4}
+.sg-cell:hover .cell-replace{display:flex}
+.cell-replace:hover{background:var(--accent)}
+.blk-code{background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius-md);padding:12px 14px;font-family:ui-monospace,'SFMono-Regular',Menlo,monospace;font-size:12px;line-height:1.6;color:var(--text);word-break:break-all}
+.blk-copy{align-self:flex-start;padding:9px 16px;border-radius:var(--radius-md);background:var(--card-bg);border:1px solid var(--border);color:var(--text-2);font-family:inherit;font-weight:700;font-size:12.5px;cursor:pointer;transition:.15s;display:inline-flex;align-items:center;gap:7px}
+.blk-copy svg{width:13px;height:13px}
+.blk-copy:hover{color:var(--text);border-color:var(--text-3)}
+.blk-copy.copied{color:#22c55e;border-color:#22c55e}
+.blk-note{font-size:12px;color:var(--text-3);line-height:1.5}
 
 .dropbar{
   position:relative;display:flex;align-items:center;gap:14px;height:56px;padding:0 20px;flex:1;
@@ -598,10 +624,15 @@ canvas{display:none}
         <button class="icon-btn" id="metaClearBtn" title="선택한 이미지 삭제"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/></svg></button>
       </div>
       <div class="topbar-row" id="styleTopRow" hidden>
-        <div class="input-row">
+        <div class="sg-tabs">
+          <button class="sg-tab-btn active" data-sgtab="auto">자동 (URL)</button>
+          <button class="sg-tab-btn" data-sgtab="manual">수동 (업로드)</button>
+        </div>
+        <div class="input-row" id="sgInputRow">
           <input type="text" id="srefInput" placeholder="sRef Code (예: 1081223460)">
           <button class="btn-import" id="srefLookupBtn">조회</button>
         </div>
+        <p class="sg-manual-hint" id="sgManualHint" style="display:none">sRef 코드는 입력하지 않아도 되지만, 입력하면 다운로드 파일명에 반영돼요. 각 칸을 클릭하거나 드래그해서 이미지를 올리면 640×960으로 자동 리사이즈됩니다.</p>
       </div>
     </div>
 
@@ -766,6 +797,21 @@ canvas{display:none}
     </div>
     <div class="blk-body" id="blkBody"></div>
     <div class="blk-foot"><button id="blkClose">확인</button></div>
+  </div>
+</div>
+
+<!-- 스타일 그리드 전용 알림 모달 -->
+<div class="blk-overlay" id="sgBlkOverlay">
+  <div class="blk-card">
+    <div class="blk-head">
+      <span class="blk-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span>
+      <div>
+        <h3 id="sgBlkTitle">알림</h3>
+        <p id="sgBlkMsg"></p>
+      </div>
+    </div>
+    <div class="blk-body" id="sgBlkBody" style="display:none"></div>
+    <div class="blk-foot"><button id="sgBlkClose">확인</button></div>
   </div>
 </div>
 
@@ -1457,51 +1503,88 @@ document.addEventListener('drop',e=>{
 
 /* ============ 스타일 그리드 ============ */
 const SUBJECTS=['portrait','landscape','still_life','hot_cup_of_coffee','tree','house','animal','street_scene','sailboat'];
+const MANUAL_W=640, MANUAL_H=960;
 let loadedImages=new Array(9).fill(null);
 let currentSref='';
 let loadCount=0;
+let sgCurrentTab='auto';
 
+/* ── sgBlkOverlay ── */
+function hideSgBlkOverlay(){ $('#sgBlkOverlay').classList.remove('show'); }
+$('#sgBlkClose').onclick=hideSgBlkOverlay;
+$('#sgBlkOverlay').addEventListener('click',e=>{ if(e.target.id==='sgBlkOverlay') hideSgBlkOverlay(); });
+
+function showCountError(n){
+  $('#sgBlkTitle').textContent='업로드 개수를 확인해주세요';
+  $('#sgBlkMsg').textContent=`${n}장은 지원하지 않아요 · 1장 또는 9장(전체)만 가능해요`;
+  $('#sgBlkBody').style.display='none'; $('#sgBlkBody').innerHTML='';
+  $('#sgBlkOverlay').classList.add('show');
+}
+
+function showAutoFailModal(sref){
+  const label=sref||'(입력값 없음)';
+  const promptText=`{portrait,landscape,still life,hot cup of coffee,tree,house,animal,street scene, sailboat} --ar 2:3  --sref ${sref}`;
+  $('#sgBlkTitle').textContent='자동 수집 대상이 아니에요';
+  $('#sgBlkMsg').innerHTML=`<b>${esc(label)}</b> Sref Code는 자동 수집 대상이 아닙니다.<br>아래 프롬프트를 실행하고 수동 모드에 업로드하면 그리드를 만들 수 있어요.`;
+  const body=$('#sgBlkBody');
+  body.style.display='flex';
+  body.innerHTML=`
+    <div class="blk-code">${esc(promptText)}</div>
+    <button class="blk-copy" id="sgBlkCopyPrompt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>프롬프트 복사</button>
+    <div class="blk-note">파일 이름은 순서대로 -01 ~ -09.png로 저장한 뒤 수동 모드에 올려주세요.</div>`;
+  $('#sgBlkOverlay').classList.add('show');
+  $('#sgBlkCopyPrompt').onclick=async()=>{
+    try{
+      await navigator.clipboard.writeText(promptText);
+      const btn=$('#sgBlkCopyPrompt');
+      btn.classList.add('copied'); btn.lastChild.textContent=' 복사됨!';
+      setTimeout(()=>{ btn.classList.remove('copied'); btn.lastChild.textContent=' 프롬프트 복사'; },1600);
+    }catch(e){ console.warn(e); }
+  };
+}
+
+/* ── 탭 전환 ── */
+function sgSwitchTab(tab){
+  sgCurrentTab=tab;
+  document.querySelectorAll('.sg-tab-btn').forEach(b=>b.classList.toggle('active',b.dataset.sgtab===tab));
+  $('#srefLookupBtn').style.display=tab==='auto'?'':'none';
+  $('#sgManualHint').style.display=tab==='manual'?'block':'none';
+  $('#srefInput').placeholder=tab==='auto'?'sRef Code (예: 1081223460)':'sRef 코드 (기록용, 선택 입력)';
+  const s=$('#sgStatus'); s.textContent=''; s.className='sg-status';
+  $('#sgGrid').innerHTML='';
+  loadedImages=new Array(9).fill(null); loadCount=0;
+  ['dlAll','dl13','dl46','dl79'].forEach(id=>$('#'+id).disabled=true);
+  if(tab==='manual'){
+    currentSref=sanitizeSgLabel($('#srefInput').value)||'manual';
+    s.textContent='9칸에 이미지를 업로드하세요 (드래그 또는 클릭)';
+    buildManualGrid();
+  }
+}
+function sanitizeSgLabel(v){ return (v||'').trim().replace(/[^\w-]/g,''); }
+document.querySelectorAll('.sg-tab-btn').forEach(b=>b.onclick=()=>sgSwitchTab(b.dataset.sgtab));
+
+/* ── 자동 그리드 빌드 ── */
 function buildGrid(sref){
   const grid=$('#sgGrid');
-  grid.innerHTML='';
-  loadedImages=new Array(9).fill(null);
-  loadCount=0;
+  grid.innerHTML=''; loadedImages=new Array(9).fill(null); loadCount=0;
   SUBJECTS.forEach((subj,i)=>{
-    const cell=document.createElement('div');
-    cell.className='sg-cell';
-
-    const spinner=document.createElement('div');
-    spinner.className='sg-spinner';
-    spinner.id=`sgSpin${i}`;
+    const cell=document.createElement('div'); cell.className='sg-cell';
+    const spinner=document.createElement('div'); spinner.className='sg-spinner'; spinner.id=`sgSpin${i}`;
     cell.appendChild(spinner);
-
-    const label=document.createElement('div');
-    label.className='sg-cell-label';
-    label.textContent=subj.replace(/_/g,' ');
+    const label=document.createElement('div'); label.className='sg-cell-label'; label.textContent=subj.replace(/_/g,' ');
     cell.appendChild(label);
     grid.appendChild(cell);
-
-    const img=new Image();
-    img.crossOrigin='anonymous';
+    const img=new Image(); img.crossOrigin='anonymous';
     img.onload=()=>{
-      $(`#sgSpin${i}`)?.remove();
-      img.classList.add('loaded');
-      cell.insertBefore(img,label);
-      const overlay=document.createElement('div');
-      overlay.className='sg-cell-ov';
-      overlay.innerHTML='<span class="sg-dl-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg>다운로드</span>';
-      cell.appendChild(overlay);
-      cell.onclick=()=>downloadSingle(i);
-      loadedImages[i]=img;
-      onResult();
+      $(`#sgSpin${i}`)?.remove(); img.classList.add('loaded'); cell.insertBefore(img,label);
+      const ov=document.createElement('div'); ov.className='sg-cell-ov';
+      ov.innerHTML='<span class="sg-dl-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg>다운로드</span>';
+      cell.appendChild(ov); cell.onclick=()=>downloadSingle(i); loadedImages[i]=img; onResult();
     };
     img.onerror=()=>{
       $(`#sgSpin${i}`)?.remove();
-      const err=document.createElement('div');
-      err.className='sg-cell-error';
-      err.textContent='로드 실패';
-      cell.appendChild(err);
-      onResult();
+      const err=document.createElement('div'); err.className='sg-cell-error'; err.textContent='로드 실패';
+      cell.appendChild(err); onResult();
     };
     img.src=`https://cdn.midjourney.com/styles/0_${sref}/${subj}_640_N.webp`;
   });
@@ -1510,16 +1593,13 @@ function buildGrid(sref){
 function onResult(){
   loadCount++;
   const loaded=loadedImages.filter(Boolean).length;
-  const s=$('#sgStatus');
-  s.textContent=`로딩 중… ${loadCount}/9`;
-  s.className='sg-status loading';
+  const s=$('#sgStatus'); s.textContent=`로딩 중… ${loadCount}/9`; s.className='sg-status loading';
   if(loadCount===9){
     if(loaded===0){
-      s.textContent='유효하지 않은 sRef 코드예요';
-      s.className='sg-status error';
+      s.textContent='❌ 자동 수집 대상이 아니에요'; s.className='sg-status error';
+      showAutoFailModal(currentSref);
     }else{
-      s.textContent=`${loaded}장 로드 완료`;
-      s.className='sg-status done';
+      s.textContent=`✅ ${loaded}장 로드 완료`; s.className='sg-status done';
       ['dlAll','dl13','dl46','dl79'].forEach(id=>$('#'+id).disabled=false);
     }
     saveSrefHistory(currentSref,loaded);
@@ -1535,31 +1615,135 @@ function loadGrid(){
   buildGrid(sref);
 }
 
+/* ── 수동 모드 ── */
+function resizeImageFile(file){
+  return new Promise((resolve,reject)=>{
+    const srcUrl=URL.createObjectURL(file);
+    const img=new Image();
+    img.onload=()=>{
+      const c=document.createElement('canvas'); c.width=MANUAL_W; c.height=MANUAL_H;
+      c.getContext('2d').drawImage(img,0,0,MANUAL_W,MANUAL_H);
+      c.toBlob(blob=>{
+        URL.revokeObjectURL(srcUrl);
+        if(!blob){ reject(new Error('resize fail')); return; }
+        const outUrl=URL.createObjectURL(blob);
+        const out=new Image();
+        out.onload=()=>resolve(out);
+        out.onerror=()=>reject(new Error('load fail'));
+        out.src=outUrl;
+      },'image/png');
+    };
+    img.onerror=()=>{ URL.revokeObjectURL(srcUrl); reject(new Error('load fail')); };
+    img.src=srcUrl;
+  });
+}
+
+function buildManualGrid(){
+  const grid=$('#sgGrid'); grid.innerHTML='';
+  loadedImages=new Array(9).fill(null); loadCount=0;
+  SUBJECTS.forEach((subj,i)=>{
+    const cell=document.createElement('div'); cell.className='sg-cell sg-manual-cell'; cell.dataset.idx=i;
+    grid.appendChild(cell); renderManualEmpty(cell,subj,i);
+  });
+}
+
+function renderManualEmpty(cell,subj,i){
+  cell.innerHTML=`<div class="manual-drop"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M17 8l-5-5-5 5"/><path d="M12 3v13"/></svg><span>${subj.replace(/_/g,' ')}</span></div>`;
+  const fi=document.createElement('input'); fi.type='file'; fi.accept='image/*'; fi.multiple=true; fi.hidden=true;
+  cell.appendChild(fi);
+  cell.onclick=()=>fi.click();
+  fi.onchange=()=>{ handleIncomingFiles(i,fi.files); fi.value=''; };
+  wireManualDrop(cell,i);
+}
+
+function renderManualLoaded(cell,i,img){
+  cell.innerHTML=''; img.classList.add('loaded'); cell.appendChild(img);
+  const ov=document.createElement('div'); ov.className='sg-cell-ov';
+  ov.innerHTML='<span class="sg-dl-badge">⬇ 다운로드</span>'; cell.appendChild(ov);
+  const rb=document.createElement('button'); rb.className='cell-replace'; rb.title='이미지 교체';
+  rb.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2v6h-6"/><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M3 22v-6h6"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/></svg>';
+  cell.appendChild(rb);
+  const fi=document.createElement('input'); fi.type='file'; fi.accept='image/*'; fi.multiple=true; fi.hidden=true;
+  cell.appendChild(fi);
+  cell.onclick=()=>downloadSingle(i);
+  rb.onclick=e=>{ e.stopPropagation(); fi.click(); };
+  fi.onchange=()=>{ handleIncomingFiles(i,fi.files); fi.value=''; };
+  wireManualDrop(cell,i);
+}
+
+function wireManualDrop(cell,i){
+  cell.addEventListener('dragover',e=>{ e.preventDefault(); e.stopPropagation(); cell.classList.add('drag'); });
+  cell.addEventListener('dragleave',e=>{ e.stopPropagation(); cell.classList.remove('drag'); });
+  cell.addEventListener('drop',e=>{ e.preventDefault(); e.stopPropagation(); cell.classList.remove('drag'); handleIncomingFiles(i,e.dataTransfer?.files); });
+}
+
+(function wireWholeGridDrag(){
+  document.addEventListener('dragover',e=>{
+    if(activeView!=='style'||sgCurrentTab!=='manual')return;
+    e.preventDefault();
+    const n=e.dataTransfer?.items?.length;
+    document.querySelectorAll('.sg-manual-cell').forEach(c=>c.classList.toggle('drag',n===9));
+  },true);
+  document.addEventListener('drop',()=>{ document.querySelectorAll('.sg-manual-cell').forEach(c=>c.classList.remove('drag')); },true);
+  document.addEventListener('dragend',()=>{ document.querySelectorAll('.sg-manual-cell').forEach(c=>c.classList.remove('drag')); });
+}());
+
+function handleIncomingFiles(i,fileList){
+  const files=fileList?[...fileList].filter(f=>/^image\//.test(f.type)||/\.(png|jpe?g|webp)$/i.test(f.name)):[];
+  if(!files.length)return;
+  if(files.length===1){ handleManualFile(i,files[0]); return; }
+  if(files.length===9){ handleBulkManualFiles(files); return; }
+  showCountError(files.length);
+}
+
+function extractSeq(name){ const base=name.replace(/\.[^.]+$/,''); const m=base.match(/(\d+)$/); return m?parseInt(m[1],10):null; }
+
+async function handleBulkManualFiles(files){
+  const ordered=files.map((f,idx)=>({f,seq:extractSeq(f.name),idx})).sort((a,b)=>{
+    const av=a.seq===null?Infinity:a.seq, bv=b.seq===null?Infinity:b.seq;
+    return av!==bv?av-bv:a.idx-b.idx;
+  });
+  const s=$('#sgStatus'); s.textContent='9장 일괄 업로드 중…'; s.className='sg-status loading';
+  for(let i=0;i<9;i++){ if(ordered[i]) await handleManualFile(i,ordered[i].f); }
+}
+
+async function handleManualFile(i,file){
+  const cell=document.querySelector(`.sg-manual-cell[data-idx="${i}"]`); if(!cell)return;
+  cell.innerHTML='<div class="sg-spinner"></div>';
+  try{
+    const img=await resizeImageFile(file); loadedImages[i]=img; renderManualLoaded(cell,i,img);
+  }catch(e){
+    console.warn(e); cell.innerHTML='<div class="sg-cell-error">리사이즈 실패</div>';
+    setTimeout(()=>renderManualEmpty(cell,SUBJECTS[i],i),1200);
+  }
+  updateManualStatus();
+}
+
+function updateManualStatus(){
+  const loaded=loadedImages.filter(Boolean).length;
+  const s=$('#sgStatus');
+  if(!loaded){ s.textContent='9칸에 이미지를 업로드하세요 (드래그 또는 클릭)'; s.className='sg-status'; }
+  else{ s.textContent=`✅ ${loaded}/9장 업로드 완료 · 640×960로 리사이즈됨`; s.className='sg-status done'; }
+  ['dlAll','dl13','dl46','dl79'].forEach(id=>$('#'+id).disabled=loaded===0);
+}
+
+/* ── 다운로드 ── */
 function downloadSingle(idx){
-  const img=loadedImages[idx];
-  if(!img)return;
-  const canvas=$('#canvas');
-  canvas.width=img.naturalWidth; canvas.height=img.naturalHeight;
+  const img=loadedImages[idx]; if(!img)return;
+  const canvas=$('#canvas'); canvas.width=img.naturalWidth; canvas.height=img.naturalHeight;
   canvas.getContext('2d').drawImage(img,0,0);
   canvas.toBlob(blob=>triggerDL(blob,`sref_${currentSref}_${SUBJECTS[idx].replace(/_/g,'-')}.png`),'image/png');
 }
 
 function downloadGroup(start,end){
-  const slots=loadedImages.slice(start,end);
-  const imgs=slots.filter(Boolean);
+  const slots=loadedImages.slice(start,end); const imgs=slots.filter(Boolean);
   if(!imgs.length){ toast('다운로드할 이미지가 없어요'); return; }
-  const ref=imgs[0];
-  const CW=ref.naturalWidth, CH=ref.naturalHeight;
-  const canvas=$('#canvas');
-  canvas.width=3*CW;
-  canvas.height=Math.ceil((end-start)/3)*CH;
+  const ref=imgs[0]; const CW=ref.naturalWidth, CH=ref.naturalHeight;
+  const canvas=$('#canvas'); canvas.width=3*CW; canvas.height=Math.ceil((end-start)/3)*CH;
   const ctx=canvas.getContext('2d');
   ctx.fillStyle=getComputedStyle(root).getPropertyValue('--card-bg').trim()||'#1a1a1d';
   ctx.fillRect(0,0,canvas.width,canvas.height);
-  slots.forEach((img,i)=>{
-    if(!img)return;
-    ctx.drawImage(img,0,0,img.naturalWidth,img.naturalHeight,(i%3)*CW,Math.floor(i/3)*CH,CW,CH);
-  });
+  slots.forEach((img,i)=>{ if(!img)return; ctx.drawImage(img,0,0,img.naturalWidth,img.naturalHeight,(i%3)*CW,Math.floor(i/3)*CH,CW,CH); });
   const suffix=end-start===9?'all':`${start+1}-${end}`;
   canvas.toBlob(blob=>triggerDL(blob,`sref_${currentSref}_${suffix}.png`),'image/png');
 }
@@ -1571,7 +1755,8 @@ function triggerDL(blob,name){
 }
 
 $('#srefLookupBtn').onclick=loadGrid;
-$('#srefInput').addEventListener('keydown',e=>{ if(e.key==='Enter') loadGrid(); });
+$('#srefInput').addEventListener('keydown',e=>{ if(e.key==='Enter'&&sgCurrentTab==='auto') loadGrid(); });
+$('#srefInput').addEventListener('input',()=>{ if(sgCurrentTab==='manual') currentSref=sanitizeSgLabel($('#srefInput').value)||'manual'; });
 $('#dlAll').onclick=()=>downloadGroup(0,9);
 $('#dl13').onclick=()=>downloadGroup(0,3);
 $('#dl46').onclick=()=>downloadGroup(3,6);
