@@ -406,19 +406,20 @@ button:active:not(:disabled){transform:scale(.97)}
 .sg-hist-del:hover{background:var(--accent-soft);color:var(--danger)}
 
 /* ---------- 확장프로그램 ---------- */
-.ext-list{display:flex;flex-direction:column;gap:10px;max-width:680px;margin:24px auto 0}
+.ext-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;max-width:900px;margin:24px auto 0;padding:0 4px}
 .ext-card{
-  display:flex;align-items:center;gap:16px;padding:16px 18px;border-radius:var(--radius-lg);
+  display:flex;flex-direction:column;gap:0;border-radius:var(--radius-lg);
   background:var(--card-bg);border:1px solid var(--border);text-decoration:none;color:var(--text);
-  transition:border-color .15s,transform .15s;
+  transition:border-color .15s,transform .15s;overflow:hidden;
 }
-.ext-card:hover{border-color:var(--text-3);transform:translateY(-1px)}
-.ext-icon{width:48px;height:48px;border-radius:var(--radius-sm);flex-shrink:0;object-fit:cover;background:var(--panel-bg)}
-.ext-info{flex:1;min-width:0}
-.ext-info h3{font-size:15px;font-weight:700;margin-bottom:3px}
-.ext-info p{font-size:13px;color:var(--text-2);line-height:1.45}
-.ext-go{display:flex;align-items:center;gap:5px;font-size:13px;font-weight:700;color:var(--accent);flex-shrink:0;white-space:nowrap}
-.ext-go svg{width:14px;height:14px}
+.ext-card:hover{border-color:var(--text-3);transform:translateY(-2px)}
+.ext-card-header{display:flex;align-items:center;gap:14px;padding:18px 18px 14px}
+.ext-icon{width:52px;height:52px;border-radius:var(--radius-md);flex-shrink:0;object-fit:cover;background:var(--panel-bg)}
+.ext-info{flex:1;min-width:0;padding:0 18px 14px}
+.ext-info h3{font-size:14px;font-weight:700;margin-bottom:5px;line-height:1.35}
+.ext-info p{font-size:12.5px;color:var(--text-2);line-height:1.5}
+.ext-go{display:flex;align-items:center;gap:5px;font-size:12.5px;font-weight:700;color:var(--accent);padding:12px 18px;border-top:1px solid var(--border);margin-top:auto}
+.ext-go svg{width:13px;height:13px}
 
 /* ---------- 추천사이트 ---------- */
 .site-gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;max-width:900px;margin:24px auto 0;padding:0 4px}
@@ -660,7 +661,7 @@ canvas{display:none}
       <section class="view" id="viewExt" hidden>
         <div class="ext-list">
           <a class="ext-card" href="https://chromewebstore.google.com/detail/midjourney-batch-prompt-r/aojeholgnonpbblhbcnoecgfmheoiogg" target="_blank" rel="noopener">
-            <img class="ext-icon" src="https://lh3.googleusercontent.com/kmGls_cBVgH2NvS1jR3sI7VZR_oDQ03tOoKvq4_xAT7WPLg62aa9jgAUcnKWDmyE0ClbRFKZq-AYuFECehoSQltu=s128-rj-sc0x00ffffff" alt="">
+            <div class="ext-card-header"><img class="ext-icon" src="https://lh3.googleusercontent.com/kmGls_cBVgH2NvS1jR3sI7VZR_oDQ03tOoKvq4_xAT7WPLg62aa9jgAUcnKWDmyE0ClbRFKZq-AYuFECehoSQltu=s128-rj-sc0x00ffffff" alt=""></div>
             <div class="ext-info">
               <h3>Midjourney Batch Prompt Runner</h3>
               <p>여러 개의 Midjourney 프롬프트를 한 번에 입력하고 순서대로 자동 전송합니다.</p>
@@ -668,7 +669,7 @@ canvas{display:none}
             <span class="ext-go">설치하기<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
           </a>
           <a class="ext-card" href="https://chromewebstore.google.com/detail/adidoojmiaiamlemllmeodopalbhnbbk?utm_source=item-share-cb" target="_blank" rel="noopener">
-            <img class="ext-icon" src="https://lh3.googleusercontent.com/zKn-Netx0j83d6ruQmaoFCie157rLdSG1zYwQqeC8w_5c98I-IXfKAz0wGHeQn1uI0SAHVkGLZFcZEOHqaCyJWA1LQ=s128-rj-sc0x00ffffff" alt="">
+            <div class="ext-card-header"><img class="ext-icon" src="https://lh3.googleusercontent.com/zKn-Netx0j83d6ruQmaoFCie157rLdSG1zYwQqeC8w_5c98I-IXfKAz0wGHeQn1uI0SAHVkGLZFcZEOHqaCyJWA1LQ=s128-rj-sc0x00ffffff" alt=""></div>
             <div class="ext-info">
               <h3>Midjourney Likes Downloader</h3>
               <p>Midjourney의 좋아요 페이지에서 이미지를 한 번에 다운로드합니다.</p>
@@ -676,7 +677,7 @@ canvas{display:none}
             <span class="ext-go">설치하기<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
           </a>
           <a class="ext-card" href="https://chromewebstore.google.com/detail/kkcgdgojecfmdcgoighjllhedopmnddd?utm_source=item-share-cb" target="_blank" rel="noopener">
-            <img class="ext-icon" src="https://lh3.googleusercontent.com/-M7jbxtASttz13frTygCqX8BIdaHxp0TE9jDUV4bOFH_ULtDjcX9_fYQ1cjsQ7x73oCCZhawiVaqIsqULO45HP_6=s128-rj-sc0x00ffffff" alt="">
+            <div class="ext-card-header"><img class="ext-icon" src="https://lh3.googleusercontent.com/-M7jbxtASttz13frTygCqX8BIdaHxp0TE9jDUV4bOFH_ULtDjcX9_fYQ1cjsQ7x73oCCZhawiVaqIsqULO45HP_6=s128-rj-sc0x00ffffff" alt=""></div>
             <div class="ext-info">
               <h3>GPT Image Batch Downloader</h3>
               <p>ChatGPT 대화에서 AI가 생성한 이미지를 한 번에 다운로드합니다.</p>
@@ -684,7 +685,7 @@ canvas{display:none}
             <span class="ext-go">설치하기<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
           </a>
           <a class="ext-card" href="https://chromewebstore.google.com/detail/ohklpdbbilakaadgeofcnmnhigciemim?utm_source=item-share-cb" target="_blank" rel="noopener">
-            <img class="ext-icon" src="https://lh3.googleusercontent.com/cb_vvV6lvKTy5UT2CltAHVUYaveLE-9RYtnNMQsETZuKrRTiEBJXx_tmdpzs49WMvyTS9z1iYAx5ybH7X7cmkrPdgw=s128-rj-sc0x00ffffff" alt="">
+            <div class="ext-card-header"><img class="ext-icon" src="https://lh3.googleusercontent.com/cb_vvV6lvKTy5UT2CltAHVUYaveLE-9RYtnNMQsETZuKrRTiEBJXx_tmdpzs49WMvyTS9z1iYAx5ybH7X7cmkrPdgw=s128-rj-sc0x00ffffff" alt=""></div>
             <div class="ext-info">
               <h3>Midjourney Hook</h3>
               <p>미드저니 이미지를 MJ Toolkit에 바로 저장합니다. 이미지 위 Hook 버튼 한 번으로 프롬프트·파라미터 포함 갤러리에 저장됩니다.</p>
@@ -692,7 +693,7 @@ canvas{display:none}
             <span class="ext-go">설치하기<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
           </a>
           <a class="ext-card" href="https://chromewebstore.google.com/detail/dkmplkbbaomekinigdodfiiomffaijjn?utm_source=item-share-cb" target="_blank" rel="noopener">
-            <img class="ext-icon" src="https://lh3.googleusercontent.com/pcIxhOCAjL1gx7wKHWv4JzeDw3V6KctlrjcsQNIn2LSJgwPLF_25kHqIe7MuLHcuXJBk8aC_0GNXABDWthYZO-qr8w=s128-rj-sc0x00ffffff" alt="">
+            <div class="ext-card-header"><img class="ext-icon" src="https://lh3.googleusercontent.com/pcIxhOCAjL1gx7wKHWv4JzeDw3V6KctlrjcsQNIn2LSJgwPLF_25kHqIe7MuLHcuXJBk8aC_0GNXABDWthYZO-qr8w=s128-rj-sc0x00ffffff" alt=""></div>
             <div class="ext-info">
               <h3>TEXTBoard</h3>
               <p>복사한 텍스트를 자동으로 모아 한 번에 합쳐주는 개인용 클립보드 수집기. 코드블럭 복사 버튼도 감지합니다.</p>
@@ -700,7 +701,7 @@ canvas{display:none}
             <span class="ext-go">설치하기<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
           </a>
           <a class="ext-card" href="https://chromewebstore.google.com/detail/ghhgndloecfojohpnpoojaodkjkaomfp?utm_source=item-share-cb" target="_blank" rel="noopener">
-            <img class="ext-icon" src="https://lh3.googleusercontent.com/V-I-sTAcyU4Ac2Fsgb4XHwD8ExCK2Gc2EJRbJFd6cuPrsKPG71hJbLKu-rcSRlztQA1hG5L_sROoQBn6myYrYbXw=s128-rj-sc0x00ffffff" alt="">
+            <div class="ext-card-header"><img class="ext-icon" src="https://lh3.googleusercontent.com/V-I-sTAcyU4Ac2Fsgb4XHwD8ExCK2Gc2EJRbJFd6cuPrsKPG71hJbLKu-rcSRlztQA1hG5L_sROoQBn6myYrYbXw=s128-rj-sc0x00ffffff" alt=""></div>
             <div class="ext-info">
               <h3>PicClip</h3>
               <p>웹 이미지를 우클릭으로 저장하거나 직접 업로드해 보관하고, 클릭 한 번으로 클립보드에 복사해 어디든 붙여넣을 수 있는 이미지 보관함입니다.</p>
@@ -708,7 +709,7 @@ canvas{display:none}
             <span class="ext-go">설치하기<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
           </a>
           <a class="ext-card" href="https://chromewebstore.google.com/detail/nmaacobbjmdpphafapmomfjpjohillpc?utm_source=item-share-cb" target="_blank" rel="noopener">
-            <img class="ext-icon" src="https://lh3.googleusercontent.com/SGtz5-bZEuQsjDd3zGRU86zBLoWDouXTcEqnzZRAuet0Rj2dH3S5I1sOOcA186DlQ7ohsFa5pDy-7YdxLo0uYT-1JkM=s128-rj-sc0x00ffffff" alt="">
+            <div class="ext-card-header"><img class="ext-icon" src="https://lh3.googleusercontent.com/SGtz5-bZEuQsjDd3zGRU86zBLoWDouXTcEqnzZRAuet0Rj2dH3S5I1sOOcA186DlQ7ohsFa5pDy-7YdxLo0uYT-1JkM=s128-rj-sc0x00ffffff" alt=""></div>
             <div class="ext-info">
               <h3>WatchSlot</h3>
               <p>보고 싶은 YouTube 영상을 큐에 저장하고, 점심·저녁·주말 등 설정한 시청 슬롯에 맞는 영상을 길이와 남은 재생시간 기준으로 다시 제안합니다.</p>
@@ -716,10 +717,18 @@ canvas{display:none}
             <span class="ext-go">설치하기<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
           </a>
           <a class="ext-card" href="https://chromewebstore.google.com/detail/enlejagaoofbangdglfkcgpjfiomofga?utm_source=item-share-cb" target="_blank" rel="noopener">
-            <img class="ext-icon" src="https://lh3.googleusercontent.com/ZJXxGKCcs9DtUAJWjnPpWSOkc8xfCVw0Y7fUteSQqw9XXWEe1zoztUrvA8DA_jnVEGkUgxFeSbq3s2QBscx7TvT0viE=s128-rj-sc0x00ffffff" alt="">
+            <div class="ext-card-header"><img class="ext-icon" src="https://lh3.googleusercontent.com/ZJXxGKCcs9DtUAJWjnPpWSOkc8xfCVw0Y7fUteSQqw9XXWEe1zoztUrvA8DA_jnVEGkUgxFeSbq3s2QBscx7TvT0viE=s128-rj-sc0x00ffffff" alt=""></div>
             <div class="ext-info">
               <h3>갈피 — 북마크 정리와 중복 관리</h3>
               <p>중복 북마크를 찾아 선택 삭제하고, 현재 페이지가 이미 저장됐는지 확인하며, 자주 쓰는 폴더 추천으로 빠르게 저장할 수 있는 북마크 관리 확장입니다.</p>
+            </div>
+            <span class="ext-go">설치하기<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+          </a>
+          <a class="ext-card" href="https://chromewebstore.google.com/detail/aalbdhbghilfomdmocnjljgcfjlfjpof?utm_source=item-share-cb" target="_blank" rel="noopener">
+            <div class="ext-card-header"><img class="ext-icon" src="https://lh3.googleusercontent.com/duYCIcRCcLW4TweuPErSyjW0jfKBSy9FQi0YnIwncbkekmpqwXh594w2WBeon-Wa97df6tBka26Lwznb-bwSp7im=s128-rj-sc0x00ffffff" alt=""></div>
+            <div class="ext-info">
+              <h3>읽기 시간 + 다크모드 리더</h3>
+              <p>현재 페이지의 예상 읽기 시간을 표시하고, 광고·사이드바를 제거한 다크모드 리더 화면으로 전환합니다. 모든 설정은 브라우저에만 저장됩니다.</p>
             </div>
             <span class="ext-go">설치하기<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
           </a>
