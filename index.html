@@ -513,17 +513,16 @@ canvas{display:none}
   /* 추천사이트 카드 — 1열 */
   .site-gallery{grid-template-columns:1fr!important;max-width:100%}
 
-  /* 그리드 뷰어 — 모바일에서 조작 패널을 콘텐츠 상단에 표시 */
+  /* 그리드 뷰어 — 모바일에서 조작 패널을 탭바 위에 fixed로 표시 */
   .dv-grid{grid-template-columns:repeat(4,1fr)!important}
   .dv-tools.show{
     display:flex!important;flex-direction:row;flex-wrap:wrap;
-    position:static;width:100%;padding:8px 12px;gap:6px;
-    background:var(--panel-bg);border-bottom:1px solid var(--border);
-    order:-1; /* dv-wrap flex에서 맨 위에 */
+    position:fixed;bottom:64px;left:0;right:0;
+    padding:8px 12px;gap:6px;z-index:99;
+    background:var(--panel-bg);border-top:1px solid var(--border);
+    max-height:40vh;overflow-y:auto;
   }
-  #viewDraft:not([hidden]) .dv-wrap{
-    display:flex;flex-direction:column;
-  }
+  #viewDraft:not([hidden]){padding-bottom:180px} /* dv-tools 높이 + 탭바 확보 */
   .dv-tools.show .side-btn{flex:1 1 auto;min-width:calc(50% - 4px);padding:9px 8px;font-size:12px}
   .dv-tools.show .ctl{flex:1 1 100%;margin:0}
   .dv-tools.show .dv-stats-panel{flex:1 1 100%}
