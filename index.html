@@ -487,13 +487,15 @@ canvas{display:none}
   .site-avatar{width:34px;height:34px}
 
   /* 메인 컨텐츠 */
-  .main{width:100%}
-  .topbar{padding:14px 16px 10px}
-  .content{padding:8px 16px 24px}
+  .main{width:100%;min-height:0;flex:1}
+  .topbar{padding:10px 16px 8px}
+  .content{padding:8px 16px calc(24px + 64px)} /* 하단 탭바 가림 방지 */
 
-  /* 드롭존 */
-  .dropbar{padding:14px 12px}
+  /* 드롭존 — 모바일에서 컴팩트하게 */
+  .dropbar{height:44px;padding:0 12px;gap:10px}
   .dz-text{font-size:13px}
+  .dropbar .dz-hint{display:none} /* PNG·JPG 뱃지 숨김 */
+  .dropbar .dz-icon{width:20px;height:20px}
 
   /* 메타 그리드 — 2열 */
   .metagrid{columns:2 auto!important}
@@ -502,8 +504,8 @@ canvas{display:none}
   /* 스타일 그리드 */
   #styleTopRow{max-width:100%}
   .sg-grid{grid-template-columns:repeat(3,1fr)!important}
-  .input-row{flex-direction:column}
-  .input-row input{width:100%}
+  .input-row{flex-direction:row} /* 가로 유지 (column이면 topbar가 너무 커짐) */
+  .input-row input{min-width:0;flex:1} /* 가로 배치에서 넘치지 않도록 */
 
   /* 확장프로그램 카드 — 1열 */
   .ext-list{grid-template-columns:1fr!important;max-width:100%}
@@ -535,9 +537,6 @@ canvas{display:none}
 
   /* 아이콘 버튼 터치 타겟 */
   .icon-btn{width:44px;height:44px}
-
-  /* topbar 행 wrap */
-  .topbar-row{flex-wrap:wrap}
 
   /* 모달/확인창 */
   .confirm-box{width:calc(100% - 32px);max-width:100%;margin:0 16px}
