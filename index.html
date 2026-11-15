@@ -553,8 +553,8 @@ canvas{display:none}
   #dvToolsCk:not(:checked) ~ aside .dv-tools.show{
     max-height:40px!important;overflow:hidden;padding:0;
   }
-  /* 접힘 상태에서 콘텐츠 padding-bottom 줄이기 (탭바64 + 패널헤더40 + 여유16) */
-  #dvToolsCk:not(:checked) ~ .main #viewDraft:not([hidden]){padding-bottom:calc(64px + 40px + 16px)!important}
+  /* 접힘 상태에서 콘텐츠 padding-bottom 줄이기 (탭바64 + 패널헤더40 + 여유64) */
+  #dvToolsCk:not(:checked) ~ .main #viewDraft:not([hidden]){padding-bottom:calc(64px + 40px + 64px)!important}
 
   /* 상세 오버레이 */
   .detail{flex-direction:column;max-height:94vh}
