@@ -442,6 +442,10 @@ canvas{display:none}
   .icon-btn{width:48px;height:48px}
 }
 
+/* checkbox hack — dv-tools 토글 (모바일 전용, PC에선 숨김) */
+.dv-ck{display:none}
+.dv-tools-mob-toggle{display:none}
+
 /* ===== 모바일 반응형 (768px 이하) ===== */
 @media(max-width:768px){
   /* body/app 구조 */
@@ -533,6 +537,22 @@ canvas{display:none}
   .dv-tools.show .dv-stats-panel{flex:1 1 100%}
   .dv-tools.show .selhead{flex:1 1 100%;margin:0;padding:0}
   .dv-tools.show .selpreview{flex:1 1 100%;max-height:60px;margin:0}
+
+  /* 모바일 토글 헤더 */
+  .dv-tools-mob-toggle{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:0 16px;height:40px;cursor:pointer;
+    border-bottom:1px solid var(--border);
+    width:100%;font-size:13px;font-weight:600;color:var(--text);
+    flex:1 1 100%;box-sizing:border-box;
+  }
+  .dv-tools-mob-toggle .dv-arr{width:18px;height:18px;transition:transform .2s}
+  /* 펼침 상태 (checked) — 화살표 위로 회전 */
+  #dvToolsCk:checked ~ aside .dv-tools.show .dv-tools-mob-toggle .dv-arr{transform:rotate(180deg)}
+  /* 접힘 상태 (unchecked) — 헤더만 보이게 */
+  #dvToolsCk:not(:checked) ~ aside .dv-tools.show{
+    max-height:40px!important;overflow:hidden;padding:0;
+  }
 
   /* 상세 오버레이 */
   .detail{flex-direction:column;max-height:94vh}
@@ -672,6 +692,8 @@ canvas{display:none}
   </div>
 </header>
 <div class="app">
+  <!-- 모바일 dv-tools 접기/펼치기용 checkbox hack -->
+  <input type="checkbox" id="dvToolsCk" class="dv-ck" checked>
   <!-- Sidebar -->
   <aside class="sidebar">
     <div class="brand">
@@ -705,6 +727,10 @@ canvas{display:none}
 
     <!-- 그리드 뷰어 전용 툴 패널 -->
     <div class="dv-tools" id="dvTools">
+      <label for="dvToolsCk" class="dv-tools-mob-toggle">
+        <span>선택 도구</span>
+        <svg class="dv-arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </label>
       <div class="dv-stats-panel" id="dv-stats"></div>
       <div class="selhead"><span class="nav-label">선택한 코드 (전체 판)</span><b id="dvSelCount">0개</b></div>
       <div class="selpreview" id="dvSelPreview"><span class="ph">칸을 클릭해 선택하면 여기에 모여요</span></div>
